@@ -11,12 +11,13 @@ import UserPhotos from "./components/UserPhotos";
 
 const App = (props) => {
   const [contentTopBar, setContentTopBar] = useState("");
+  const [advancedFeatures, setAdvancedFeatures] = useState(false);
   return (
       <Router>
         <div>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TopBar contentTopBar={contentTopBar} />
+              <TopBar contentTopBar={contentTopBar} advancedFeatures={advancedFeatures} setAdvancedFeatures={setAdvancedFeatures} />
             </Grid>
             <div className="main-topbar-buffer" />
             <Grid item sm={3}>
@@ -33,7 +34,11 @@ const App = (props) => {
                   />
                   <Route
                       path="/photos/:userId"
-                      element = {<UserPhotos setContentTopBar={setContentTopBar}/>}
+                      element = {<UserPhotos setContentTopBar={setContentTopBar} advancedFeatures={advancedFeatures} setAdvancedFeatures={setAdvancedFeatures}/>}
+                  />
+                  <Route
+                      path="/photos/:userId/:photoId"
+                      element = {<UserPhotos setContentTopBar={setContentTopBar} advancedFeatures={advancedFeatures} setAdvancedFeatures={setAdvancedFeatures}/>}
                   />
                   <Route path="/users" element={<UserList />} />
                 </Routes>
