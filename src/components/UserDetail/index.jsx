@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Typography, Button, Box } from "@mui/material";
-import models from "../../modelData/models";
 import "./styles.css";
 import { useParams, Link } from "react-router-dom";
 import fetchModel from "../../lib/fetchModelData";

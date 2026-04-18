@@ -1,13 +1,14 @@
 import './App.css';
 
 import React, {useState} from "react";
-import { Grid, Typography, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import TopBar from "./components/TopBar";
 import UserDetail from "./components/UserDetail";
 import UserList from "./components/UserList";
 import UserPhotos from "./components/UserPhotos";
+import UserComment from "./components/UserComment";
 
 const App = (props) => {
   const [contentTopBar, setContentTopBar] = useState("");
@@ -41,6 +42,7 @@ const App = (props) => {
                       element = {<UserPhotos setContentTopBar={setContentTopBar} advancedFeatures={advancedFeatures} setAdvancedFeatures={setAdvancedFeatures}/>}
                   />
                   <Route path="/users" element={<UserList />} />
+                  <Route path="/comments/:userId" element={<UserComment />} />
                 </Routes>
               </Paper>
             </Grid>

@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Typography, Divider, Box, Button } from "@mui/material";
 
 import "./styles.css";
 import {useParams, Link, useNavigate} from "react-router-dom";
 import fetchModel from "../../lib/fetchModelData";
-/**
- * Define UserPhotos, a React component of Project 4.
- */
+
 function UserPhotos ({setContentTopBar, advancedFeatures, setAdvancedFeatures}) {
     const {userId, photoId} = useParams();
     const [userPhotos, setUserPhotos] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-      fetchModel(`/photosOfUser/${userId}`)
+      fetchModel(`/photo/photosOfUser/${userId}`)
       .then(data => setUserPhotos(data))
       .catch(err => console.log(err))
     }, [userId]);
@@ -29,7 +27,6 @@ function UserPhotos ({setContentTopBar, advancedFeatures, setAdvancedFeatures}) 
             .catch(console.log);
     }, [userId, setContentTopBar]);
 
-    // Xử lý đồng bộ URL và Checkbox an toàn (tránh làm hỏng chức năng cũ)
     useEffect(() => {
         if (advancedFeatures && userPhotos && userPhotos.length > 0 && !photoId) {
             navigate(`/photos/${userId}/${userPhotos[0]._id}`, { replace: true });
@@ -38,11 +35,9 @@ function UserPhotos ({setContentTopBar, advancedFeatures, setAdvancedFeatures}) 
         }
     }, [advancedFeatures, userPhotos, photoId, userId, navigate]);
 
-    // Kích hoạt ngay lần đầu nếu truy cập bằng URL Deep-Link của một ảnh cụ thể
     useEffect(() => {
         if (photoId && setAdvancedFeatures) setAdvancedFeatures(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Chỉ chạy một lần lúc mount để không block thao tác tắt checkbox
+    }, []); 
 
     if (!userPhotos) return <Typography>Loading...</Typography>;
 

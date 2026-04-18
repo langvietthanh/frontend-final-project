@@ -4,7 +4,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemButton
+  ListItemButton,
+  Box,
+  Chip
 } from "@mui/material";
 
 import "./styles.css";
@@ -19,7 +21,7 @@ function UserList () {
 
     useEffect(() => {
       fetchModel("/user/list")
-        .then((data) => setUsers(data))
+        .then((data) => {setUsers(data)})
         .catch((err) => console.log(err));
     }, []);
 
@@ -28,7 +30,28 @@ function UserList () {
         <List component="nav">
           {users.map((item) => (
             <React.Fragment key={item._id}>
-              <ListItem disablePadding>
+              <ListItem 
+                disablePadding
+                secondaryAction={
+                  <Box display="flex" gap={1}>
+                    {/* Bong bóng xanh lá */}
+                    <Chip 
+                      label={item.photo_count || 0} 
+                      size="small" 
+                      sx={{ backgroundColor: '#4caf50', color: 'white' }} 
+                    />
+                    {/* Bong bóng đỏ*/}
+                    <Chip 
+                      label={item.comment_count || 0} 
+                      size="small" 
+                      clickable
+                      component={Link}
+                      to={`/comments/${item._id}`}
+                      sx={{ backgroundColor: '#f44336', color: 'white' }} 
+                    />
+                  </Box>
+                }
+              >
                 <ListItemButton component={Link} to={`/users/${item._id}`}>
                   <ListItemText primary={`${item.first_name} ${item.last_name}`} />
                 </ListItemButton>
