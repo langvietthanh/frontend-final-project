@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 
 function UserComment(){
     const { userId } = useParams();
-    const [photos, setPhotos] = useState([]); // Đổi tên biến cho đúng ngữ nghĩa
+    const [photos, setPhotos] = useState([]); 
 
     useEffect(() => {
         fetchModel(`/comment/commentOfUser/${userId}`)
-        .then(data => {console.log(data);setPhotos(data)})
+        .then(data => setPhotos(data))
         .catch((err) => console.log(err));
     },[userId]);
 
@@ -25,13 +25,12 @@ function UserComment(){
                 <Box key={photo._id} sx={{ mb: 3, display: 'flex', gap: 2, alignItems: 'flex-start' }}>
                     <Link to={`/photos/${photo.user_id}`}>
                         <img 
-                            src={require(`../../images/${photo.file_name}`)} 
+                            src={`http://localhost:8081/images/${photo.file_name}`} 
                             alt={photo.file_name} 
                             style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px' }}
                         />
                     </Link>
                     <Box>
-                        {/* Duyệt qua các comment của bức ảnh, chỉ hiển thị comment do userId này viết */}
                         {photo.comments && photo.comments
                             .filter(c => c.user_id === userId)
                             .map(comment => (

@@ -2,23 +2,52 @@ import './App.css';
 
 import React, {useState} from "react";
 import { Grid, Paper } from "@mui/material";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Outlet } from "react-router-dom";
 
-import TopBar from "./components/TopBar";
-import UserDetail from "./components/UserDetail";
-import UserList from "./components/UserList";
-import UserPhotos from "./components/UserPhotos";
-import UserComment from "./components/UserComment";
+import {
+  TopBar,
+  UserDetail,
+  UserList,
+  UserPhotos,
+  UserComment,
+  ProtectedRoute,
+  LoginRegister,
+  Register,
+  Login
+} from "./components";
+
+import { AppContext } from './context';
 
 const App = (props) => {
   const [contentTopBar, setContentTopBar] = useState("");
   const [advancedFeatures, setAdvancedFeatures] = useState(false);
+  const [userPhotos, setUserPhotos] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [listUser, setListUser] = useState([]);
+
+  const contextValue ={
+    contentTopBar,
+    setContentTopBar,
+    advancedFeatures, 
+    setAdvancedFeatures,
+    token,
+    setToken,
+    user,
+    setUser,
+    userPhotos, 
+    setUserPhotos,
+    listUser,
+    setListUser
+  }
+
   return (
+    <AppContext.Provider value={contextValue}>
       <Router>
         <div>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TopBar contentTopBar={contentTopBar} advancedFeatures={advancedFeatures} setAdvancedFeatures={setAdvancedFeatures} />
+              <TopBar/>
             </Grid>
             <div className="main-topbar-buffer" />
             <Grid item sm={3}>
@@ -27,28 +56,49 @@ const App = (props) => {
               </Paper>
             </Grid>
             <Grid item sm={9}>
-              <Paper className="main-grid-item">
+              <Paper >
                 <Routes>
+                  <Route path="/" element={<Outlet />} >
+                    <Route index element={<LoginRegister />} />
+                    <Route path ="register" element={<Register />}/>
+                    <Route path ="login" element={<Login />}/>
+                  </Route>
                   <Route
                       path="/users/:userId"
-                      element = {<UserDetail setContentTopBar={setContentTopBar}/>}
+                      element = {
+                        <ProtectedRoute>
+                          <UserDetail />
+                        </ProtectedRoute>}
                   />
                   <Route
                       path="/photos/:userId"
-                      element = {<UserPhotos setContentTopBar={setContentTopBar} advancedFeatures={advancedFeatures} setAdvancedFeatures={setAdvancedFeatures}/>}
+                      element = {
+                        <ProtectedRoute>
+                          <UserPhotos />
+                        </ProtectedRoute>}
                   />
                   <Route
                       path="/photos/:userId/:photoId"
-                      element = {<UserPhotos setContentTopBar={setContentTopBar} advancedFeatures={advancedFeatures} setAdvancedFeatures={setAdvancedFeatures}/>}
+                      element = {
+                        <ProtectedRoute>
+                          <UserPhotos />
+                        </ProtectedRoute>}
                   />
-                  <Route path="/users" element={<UserList />} />
-                  <Route path="/comments/:userId" element={<UserComment />} />
+                  <Route path="/users" element = {
+                      <ProtectedRoute>
+                      <UserList />
+                    </ProtectedRoute>} />
+                  <Route path="/comments/:userId" element = {
+                      <ProtectedRoute>
+                      <UserComment />
+                    </ProtectedRoute>} />
                 </Routes>
               </Paper>
             </Grid>
           </Grid>
         </div>
       </Router>
+    </AppContext.Provider>
   );
 }
 

@@ -6,7 +6,14 @@
  */
 async function fetchModel(url) {
   try {
-    const response = await fetch(`http://localhost:8081/api${url}`);
+    const token = localStorage.getItem("token");
+    const response = await fetch(`http://localhost:8081/api${url}`, {
+      headers:{
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    }
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

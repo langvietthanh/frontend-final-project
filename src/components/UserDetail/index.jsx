@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Typography, Button, Box } from "@mui/material";
 import "./styles.css";
 import { useParams, Link } from "react-router-dom";
 import fetchModel from "../../lib/fetchModelData";
+import { AppContext } from "../../context";
 
-
-/**
- * Define UserDetail, a React component of Project 4.
- */
-function UserDetail( {setContentTopBar} ) {
+function UserDetail() {
+    const {setContentTopBar} = useContext(AppContext);
     const { userId } = useParams();
     const [userModel, setUserModel] = useState(null);
 
@@ -27,10 +25,10 @@ function UserDetail( {setContentTopBar} ) {
 
     return (
         <Box sx={{ p: 2 }}>
-          <Typography variant="h4" gutterBottom>{userModel.first_name} {userModel.last_name}</Typography>
-          <Typography variant="body1" gutterBottom><strong>Location:</strong> {userModel.location}</Typography>
-          <Typography variant="body1" gutterBottom><strong>Description:</strong> {userModel.description}</Typography>
-          <Typography variant="body1" gutterBottom><strong>Occupation:</strong> {userModel.occupation}</Typography>
+          <Typography variant="h4" >{userModel.first_name} {userModel.last_name}</Typography>
+          <Typography variant="body1" ><strong>Location:</strong> {userModel.location}</Typography>
+          <Typography variant="body1" ><strong>Description:</strong> {userModel.description}</Typography>
+          <Typography variant="body1" ><strong>Occupation:</strong> {userModel.occupation}</Typography>
           <Box sx={{ mt: 2 }}>
             <Button variant="contained" component={Link} to={`/photos/${userModel._id}`}>
                 View Photos
