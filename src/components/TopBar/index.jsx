@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import fetchModel from "../../lib/fetchModelData"; 
 
 function TopBar () {
-  const { contentTopBar, setAdvancedFeatures, advancedFeatures, token, setToken, user, setUser, setUserPhotos, setListUser } = useContext(AppContext);  
+  const { setSnackbar, setContentTopBar, contentTopBar, setAdvancedFeatures, advancedFeatures, token, setToken, user, setUser, setUserPhotos, setListUser } = useContext(AppContext);  
   const navigate = useNavigate();
 
   function handleLogout(){
-    console.log("logout");
+    setContentTopBar("");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setToken(null);
@@ -31,16 +31,18 @@ function TopBar () {
           body: formData,
         });
         if (res.ok) {
+          // load lai anh
           fetchModel(`/photos/photosOfUser/${user._id}`)
           .then(data => setUserPhotos(data))
           .catch(err => console.log(err))
+          // load lai thong tin tat ca nguoi dung
           fetchModel("/user/list")
           .then((data) => {setListUser(data)})
           .catch((err) => console.log(err));
-          alert("Upload success");
+          setSnackbar({open: true, message: "Upload success", severity: "success"});
           navigate(`/photos/${user._id}`);
         } else {
-          alert("Upload fail");
+          setSnackbar({open: true, message: "Upload fail", severity: "error"});
         }
       } catch (error) {
         console.log("Upload error:", error);

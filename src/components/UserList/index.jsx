@@ -29,32 +29,32 @@ function UserList () {
   return (
     <div>
       <List component="nav">
-        {listUser.map((item) => (
-          <React.Fragment key={item._id}>
+        {listUser.map((user) => (
+          <React.Fragment key={user._id}>
             <ListItem 
               disablePadding
               secondaryAction={
                 <Box display="flex" gap={1}>
                   {/* Bong bóng xanh lá */}
                   <Chip 
-                    label={item.photo_count || 0} 
+                    label={user.photo_count || 0} 
                     size="small" 
                     sx={{ backgroundColor: '#4caf50', color: 'white' }} 
                   />
                   {/* Bong bóng đỏ*/}
                   <Chip 
-                    label={item.comment_count || 0} 
+                    label={user.comment_count || 0} 
                     size="small" 
                     clickable
                     component={Link}
-                    to={`/comments/${item._id}`}
+                    to={`/comments/${user._id}`}
                     sx={{ backgroundColor: '#f44336', color: 'white' }} 
                   />
                 </Box>
               }
             >
-              <ListItemButton component={Link} to={`/users/${item._id}`}>
-                <ListItemText primary={`${item.first_name} ${item.last_name}`} />
+              <ListItemButton component={Link} to={`/users/${user._id}`}>
+                <ListItemText primary={`${user.first_name} ${user.last_name}`} />
               </ListItemButton>
             </ListItem>
             <Divider />

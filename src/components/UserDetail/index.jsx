@@ -6,7 +6,7 @@ import fetchModel from "../../lib/fetchModelData";
 import { AppContext } from "../../context";
 
 function UserDetail() {
-    const {setContentTopBar} = useContext(AppContext);
+    const {setContentTopBar, setUserPhotos} = useContext(AppContext);
     const { userId } = useParams();
     const [userModel, setUserModel] = useState(null);
 
@@ -30,7 +30,7 @@ function UserDetail() {
           <Typography variant="body1" ><strong>Description:</strong> {userModel.description}</Typography>
           <Typography variant="body1" ><strong>Occupation:</strong> {userModel.occupation}</Typography>
           <Box sx={{ mt: 2 }}>
-            <Button variant="contained" component={Link} to={`/photos/${userModel._id}`}>
+            <Button variant="contained" component={Link} to={`/photos/${userModel._id}`} onClick={() => setUserPhotos(null)}>
                 View Photos
             </Button>
           </Box>

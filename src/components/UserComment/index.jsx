@@ -1,10 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import fetchModel from "../../lib/fetchModelData";
 import { Box, Typography, Divider } from "@mui/material";
 import { Link } from "react-router-dom";
+import {AppContext} from "../../context";
 
 function UserComment(){
+    const {setUserPhotos} = useContext(AppContext);
     const { userId } = useParams();
     const [photos, setPhotos] = useState([]); 
 
@@ -28,6 +30,7 @@ function UserComment(){
                             src={`http://localhost:8081/images/${photo.file_name}`} 
                             alt={photo.file_name} 
                             style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px' }}
+                            onClick={() => setUserPhotos(null)}
                         />
                     </Link>
                     <Box>

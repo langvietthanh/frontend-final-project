@@ -7,7 +7,7 @@ import { AppContext } from "../../context";
 function Login(){
     const {register, handleSubmit, formState:{errors}} = useForm();
     const navigate = useNavigate();
-    const { setToken, setUser } = useContext(AppContext);
+    const { setToken, setUser, setSnackbar } = useContext(AppContext);
     
     function onSubmit(data){
         try{
@@ -26,10 +26,11 @@ function Login(){
                     localStorage.setItem("user", JSON.stringify(result));
                     setToken(result.token);
                     setUser(result);
+                    setSnackbar({open: true, message: `Login success` , severity: "success"});
                     navigate(`/users/${result._id}`);
                 } else {
-                    const errorText = await res.text();
-                    alert("Login failed: " + errorText);
+                    const result = await res.json();
+                    setSnackbar({open: true, message: `Login failed: ${result.message}` , severity: "error"})
                 }
             }
             fetchData();
@@ -53,6 +54,7 @@ function Login(){
                         margin="normal"
                         {...register("username", {required: "User name is required"})}
                         error={!!errors.username}
+                        helperText={errors.username?.message}
                     />
                     <TextField
                         label="Password"
@@ -62,6 +64,7 @@ function Login(){
                         margin="normal"
                         {...register("password", {required: "Password is required"})}
                         error={!!errors.password}
+                        helperText={errors.password?.message}
                     />
                     <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
                         Login

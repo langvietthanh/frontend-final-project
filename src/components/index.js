@@ -7,5 +7,5 @@ import ProtectedRoute from './ProtectecRoute';
 import LoginRegister from "./LoginRegister";
 import Register from "./LoginRegister/Register";
 import Login from "./LoginRegister/Login";
-
-export {TopBar, UserDetail, UserList, UserPhotos, UserComment, ProtectedRoute, LoginRegister, Register, Login};
+import AdvancedUserPhotos from "./AdvancedUserPhotos";
+export {TopBar, UserDetail, UserList, UserPhotos, UserComment, ProtectedRoute, LoginRegister, Register, Login, AdvancedUserPhotos};

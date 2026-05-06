@@ -1,18 +1,21 @@
-import { useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, TextField, Typography, Paper } from "@mui/material";
+import { AppContext } from "../../context";
 
 function Register(){
     const {register, handleSubmit, reset, formState:{errors}} = useForm();
-    
+    const [passRegister, setPassRegister] = useState(false);
+    const navigate = useNavigate();
+    const { setSnackbar } = useContext(AppContext);
+
     function onSubmit(data){
-        // Kiểm tra mật khẩu có khớp nhau không
         if (data.password !== data.password_confirm) {
-            alert("Mật khẩu xác nhận không khớp!");
+            setSnackbar({ open: true, message: "Mật khẩu xác nhận không khớp!", severity: 'error' });
             return;
         }
-
         try{
-            console.log(data);
             const fetchData = async () => {
                 const res = await fetch("http://localhost:8081/api/user", {
                     method: "POST",
@@ -31,11 +34,12 @@ function Register(){
                 });
 
                 if (res.ok) {
-                    alert("Register success");
+                    setSnackbar({ open: true, message: "Register success", severity: 'success' });
+                    setPassRegister(true);
                     reset();
                 } else {
                     const errorText = await res.text();
-                    alert("Register fail" + errorText);
+                    setSnackbar({ open: true, message: "Register fail " + errorText, severity: 'error' });
                 }
             }
             fetchData();
@@ -66,8 +70,19 @@ function Register(){
                         variant="outlined"
                         fullWidth
                         margin="dense"
-                        {...register("password", {required: "Please enter Password"})}
+                        {...register("password", {
+                            required: "Please enter Password",
+                            minLength: {
+                                value: 8,
+                                message: "Mật khẩu phải có ít nhất 8 ký tự"
+                            },
+                            pattern: {
+                                value: /^(?=.*[A-Za-z])(?=.*\d).*$/,
+                                message: "Mật khẩu phải bao gồm cả chữ và số"
+                            }
+                        })}
                         error={!!errors.password}
+                        helperText={errors.password?.message}
                     />
                     <TextField
                         label="Confirm Password"
@@ -119,6 +134,7 @@ function Register(){
                         Register Me
                     </Button>
                 </form>
+                {passRegister && <Button onClick={() => navigate("/login")} variant="contained" fullWidth sx={{ mt: 2 }}>Go to Login</Button>}
             </Paper>
         </Box>
     );
