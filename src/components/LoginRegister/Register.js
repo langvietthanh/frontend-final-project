@@ -26,7 +26,7 @@ function Register() {
     }
     try {
       const fetchData = async () => {
-        const res = await fetch("https://34dct4-8081.csb.app/api/user", {
+        const res = await fetch("http://localhost:8081/api/user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -85,6 +85,7 @@ function Register() {
             margin="dense"
             {...register("login_name", { required: "Please enter Login Name" })}
             error={!!errors.login_name}
+            helperText={errors.login_name?.message}
           />
           <TextField
             label="Password"
@@ -113,9 +114,10 @@ function Register() {
             fullWidth
             margin="dense"
             {...register("password_confirm", {
-              required: "Vui lòng xác nhận Password",
+              required: "Please confirm Password",
             })}
             error={!!errors.password_confirm}
+            helperText={errors.password_confirm?.message}
           />
           <TextField
             label="First Name"
@@ -124,6 +126,7 @@ function Register() {
             margin="dense"
             {...register("first_name", { required: "Please enter First Name" })}
             error={!!errors.first_name}
+            helperText={errors.first_name?.message}
           />
           <TextField
             label="Last Name"
@@ -132,6 +135,7 @@ function Register() {
             margin="dense"
             {...register("last_name", { required: "Please enter Last Name" })}
             error={!!errors.last_name}
+            helperText={errors.last_name?.message}
           />
           <TextField
             label="Location"
