@@ -35,7 +35,7 @@ function CommentDetail({comment, photoId}){
     e.stopPropagation();
     try {
       const fetchData = async () => {
-        const res = await fetch(`http://localhost:8081/api/comment/${photoId}/${comment._id}`, {
+        const res = await fetch(`https://34dct4-8081.csb.app/api/comment/${photoId}/${comment._id}`, {
           method: "DELETE",
           headers: {
             "Authorization": `Bearer ${token}`

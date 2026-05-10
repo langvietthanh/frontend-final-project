@@ -1,15 +1,35 @@
 import React, { useContext } from "react";
-import { AppBar, Toolbar, Typography, Box, Checkbox, FormControlLabel, Button } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Button,
+} from "@mui/material";
 import { AppContext } from "../../context";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
-import fetchModel from "../../lib/fetchModelData"; 
+import fetchModel from "../../lib/fetchModelData";
 
-function TopBar () {
-  const { setSnackbar, setContentTopBar, contentTopBar, setAdvancedFeatures, advancedFeatures, token, setToken, user, setUser, setUserPhotos, setListUser } = useContext(AppContext);  
+function TopBar() {
+  const {
+    setSnackbar,
+    setContentTopBar,
+    contentTopBar,
+    setAdvancedFeatures,
+    advancedFeatures,
+    token,
+    setToken,
+    user,
+    setUser,
+    setUserPhotos,
+    setListUser,
+  } = useContext(AppContext);
   const navigate = useNavigate();
 
-  function handleLogout(){
+  function handleLogout() {
     setContentTopBar("");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -23,26 +43,36 @@ function TopBar () {
       const formData = new FormData();
       formData.append("uploadedphoto", e.target.files[0]);
       try {
-        const res = await fetch("http://localhost:8081/api/photos/new", {
+        const res = await fetch("https://34dct4-8081.csb.app/api/photos/new", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer " + token
+            Authorization: "Bearer " + token,
           },
           body: formData,
         });
         if (res.ok) {
           // load lai anh
           fetchModel(`/photos/photosOfUser/${user._id}`)
-          .then(data => setUserPhotos(data))
-          .catch(err => console.log(err))
+            .then((data) => setUserPhotos(data))
+            .catch((err) => console.log(err));
           // load lai thong tin tat ca nguoi dung
           fetchModel("/user/list")
-          .then((data) => {setListUser(data)})
-          .catch((err) => console.log(err));
-          setSnackbar({open: true, message: "Upload success", severity: "success"});
+            .then((data) => {
+              setListUser(data);
+            })
+            .catch((err) => console.log(err));
+          setSnackbar({
+            open: true,
+            message: "Upload success",
+            severity: "success",
+          });
           navigate(`/photos/${user._id}`);
         } else {
-          setSnackbar({open: true, message: "Upload fail", severity: "error"});
+          setSnackbar({
+            open: true,
+            message: "Upload fail",
+            severity: "error",
+          });
         }
       } catch (error) {
         console.log("Upload error:", error);
@@ -71,23 +101,32 @@ function TopBar () {
                 onChange={handleUpload}
               />
             </Button>
-            <Button variant="contained" color="error" size="small" onClick={handleLogout}>
+            <Button
+              variant="contained"
+              color="error"
+              size="small"
+              onClick={handleLogout}
+            >
               Logout
             </Button>
           </>
         )}
         <Box sx={{ flexGrow: 1 }} />
         {setAdvancedFeatures && (
-            <FormControlLabel
-                control={
-                    <Checkbox 
-                        checked={advancedFeatures} 
-                        onChange={(e) => setAdvancedFeatures(e.target.checked)} 
-                        sx={{ color: "white", '&.Mui-checked': { color: "white" } }}
-                    />
-                }
-                label={<Typography variant="body1" color="inherit">Enable Advanced Features</Typography>}
-            />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={advancedFeatures}
+                onChange={(e) => setAdvancedFeatures(e.target.checked)}
+                sx={{ color: "white", "&.Mui-checked": { color: "white" } }}
+              />
+            }
+            label={
+              <Typography variant="body1" color="inherit">
+                Enable Advanced Features
+              </Typography>
+            }
+          />
         )}
         <Typography variant="h5" color="inherit">
           {contentTopBar}

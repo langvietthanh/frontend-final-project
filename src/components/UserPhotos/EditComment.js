@@ -17,7 +17,7 @@ function EditComment({content, setEditClicked, comment_id, photoId}){
         comment: commentEdited
       };  
       const fetchData = async () => {
-        const res = await fetch(`http://localhost:8081/api/comment/${photoId}/${comment_id}`, {
+        const res = await fetch(`https://34dct4-8081.csb.app/api/comment/${photoId}/${comment_id}`, {
           method: "PUT",
           headers:{
             "Content-Type": "application/json",

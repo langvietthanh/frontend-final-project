@@ -60,7 +60,7 @@ function PhotoDetail({photo}){
       <Typography variant="subtitle2" color="textSecondary">
         Time upload photo: {formattedDate}
       </Typography>
-      <img src={`http://localhost:8081/images/${photo.file_name}`} alt={photo.file_name} style={{ maxWidth: "100%", height: "auto", display: "block", marginTop: 8, marginBottom: 8 }}/>
+      <img src={`https://34dct4-8081.csb.app/images/${photo.file_name}`} alt={photo.file_name} style={{ maxWidth: "100%", height: "auto", display: "block", marginTop: 8, marginBottom: 8 }}/>
       <CommentsOfPhoto comments={photo.comments} photoId={photo._id} />
       <Divider sx={{ mt: 2 }} />
     </Box>

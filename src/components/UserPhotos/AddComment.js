@@ -17,7 +17,7 @@ function AddComment({photoId}){
   function onSubmit(data){
     try{
       const fetchData = async () => {
-        const res = await fetch(`http://localhost:8081/api/comment/commentsOfPhoto/${photoId}`,{
+        const res = await fetch(`https://34dct4-8081.csb.app/api/comment/commentsOfPhoto/${photoId}`,{
           method: "POST",
           headers:{
             "Content-Type": "application/json",

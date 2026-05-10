@@ -12,7 +12,7 @@ function Login(){
     function onSubmit(data){
         try{
             const fetchData = async () => {
-                const res = await fetch("http://localhost:8081/admin/login", {
+                const res = await fetch("https://34dct4-8081.csb.app/admin/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
