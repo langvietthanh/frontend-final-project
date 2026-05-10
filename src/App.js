@@ -1,8 +1,13 @@
-import './App.css';
+import "./App.css";
 
 import { useState } from "react";
 import { Grid, Paper, Box, Snackbar, Alert } from "@mui/material";
-import { BrowserRouter as Router, Route, Routes, Outlet } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Outlet,
+} from "react-router-dom";
 
 import {
   TopBar,
@@ -16,7 +21,7 @@ import {
   Login,
 } from "./components";
 
-import { AppContext } from './context';
+import { AppContext } from "./context";
 
 const App = (props) => {
   const [contentTopBar, setContentTopBar] = useState("");
@@ -24,9 +29,12 @@ const App = (props) => {
   const [userPhotos, setUserPhotos] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [user, setUser] = useState(localStorage.getItem("user") || null);
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: '' });
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
   const [listUser, setListUser] = useState([]);
-
   const contextValue = {
     contentTopBar,
     setContentTopBar,
@@ -41,15 +49,15 @@ const App = (props) => {
     listUser,
     setListUser,
     snackbar,
-    setSnackbar
-  }
+    setSnackbar,
+  };
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setSnackbar({ ...snackbar, open: false });
-  }
+  };
 
   return (
     <AppContext.Provider value={contextValue}>
@@ -60,22 +68,20 @@ const App = (props) => {
               <TopBar />
             </Grid>
             <div className="main-topbar-buffer" />
-            <Box display={token ? "none" : ""}>
-
-            </Box>
+            <Box display={token ? "none" : ""}></Box>
             <Grid item xs={12}>
               <Routes>
-                <Route path="/" element={<Outlet />} >
+                <Route path="/" element={<Outlet />}>
                   <Route index element={<LoginRegister />} />
                   <Route path="register" element={<Register />} />
                   <Route path="login" element={<Login />} />
                 </Route>
               </Routes>
             </Grid>
-            {token &&
+            {token && (
               <>
                 <Grid item sm={3}>
-                  <Paper className="main-grid-item">
+                  <Paper>
                     <UserList />
                   </Paper>
                 </Grid>
@@ -87,14 +93,16 @@ const App = (props) => {
                         element={
                           <ProtectedRoute>
                             <UserDetail />
-                          </ProtectedRoute>}
+                          </ProtectedRoute>
+                        }
                       />
                       <Route
                         path="/photos/:userId"
                         element={
                           <ProtectedRoute>
                             <UserPhotos />
-                          </ProtectedRoute>}
+                          </ProtectedRoute>
+                        }
                       />
                       <Route
                         path="/photos/:userId/:photoId"
@@ -104,34 +112,46 @@ const App = (props) => {
                           </ProtectedRoute>
                         }
                       />
-                      <Route path="/users" element={
-                        <ProtectedRoute>
-                          <UserList />
-                        </ProtectedRoute>} />
-                      <Route path="/comments/:userId" element={
-                        <ProtectedRoute>
-                          <UserComment />
-                        </ProtectedRoute>} />
+                      <Route
+                        path="/users"
+                        element={
+                          <ProtectedRoute>
+                            <UserList />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="/comments/:userId"
+                        element={
+                          <ProtectedRoute>
+                            <UserComment />
+                          </ProtectedRoute>
+                        }
+                      />
                     </Routes>
                   </Paper>
                 </Grid>
               </>
-            }
+            )}
           </Grid>
         </div>
       </Router>
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>
     </AppContext.Provider>
   );
-}
+};
 
 export default App;
