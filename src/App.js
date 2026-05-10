@@ -67,8 +67,9 @@ const App = (props) => {
             <Grid item xs={12}>
               <TopBar />
             </Grid>
+
             <div className="main-topbar-buffer" />
-            <Box display={token ? "none" : ""}></Box>
+
             <Grid item xs={12}>
               <Routes>
                 <Route path="/" element={<Outlet />}>
@@ -78,61 +79,61 @@ const App = (props) => {
                 </Route>
               </Routes>
             </Grid>
+
             {token && (
-              <>
-                <Grid item sm={3}>
-                  <Paper>
-                    <UserList />
-                  </Paper>
-                </Grid>
-                <Grid item sm={9}>
-                  <Paper>
-                    <Routes>
-                      <Route
-                        path="/users/:userId"
-                        element={
-                          <ProtectedRoute>
-                            <UserDetail />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/photos/:userId"
-                        element={
-                          <ProtectedRoute>
-                            <UserPhotos />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/photos/:userId/:photoId"
-                        element={
-                          <ProtectedRoute>
-                            <UserPhotos />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/users"
-                        element={
-                          <ProtectedRoute>
-                            <UserList />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/comments/:userId"
-                        element={
-                          <ProtectedRoute>
-                            <UserComment />
-                          </ProtectedRoute>
-                        }
-                      />
-                    </Routes>
-                  </Paper>
-                </Grid>
-              </>
+              <Grid item sm={3}>
+                <Paper>
+                  <UserList />
+                </Paper>
+              </Grid>
             )}
+
+            <Grid item sm={9}>
+              <Paper>
+                <Routes>
+                  <Route
+                    path="/users/:userId"
+                    element={
+                      <ProtectedRoute>
+                        <UserDetail />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/photos/:userId"
+                    element={
+                      <ProtectedRoute>
+                        <UserPhotos />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/photos/:userId/:photoId"
+                    element={
+                      <ProtectedRoute>
+                        <UserPhotos />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/users"
+                    element={
+                      <ProtectedRoute>
+                        <UserList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/comments/:userId"
+                    element={
+                      <ProtectedRoute>
+                        <UserComment />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </Paper>
+            </Grid>
           </Grid>
         </div>
       </Router>
