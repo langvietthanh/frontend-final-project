@@ -17,7 +17,7 @@ function TopBar () {
     setUser(null);
     navigate("/");
   }
-
+  
   const handleUpload = async (e) => {
     if (e.target.files.length > 0) {
       const formData = new FormData();
@@ -71,8 +71,11 @@ function TopBar () {
                 onChange={handleUpload}
               />
             </Button>
-            <Button variant="contained" color="error" size="small" onClick={handleLogout}>
+            <Button variant="contained" color="error" size="small" onClick={handleLogout} sx={{ mr: 2 }}>
               Logout
+            </Button>
+            <Button variant="contained" size="small" onClick={ () => navigate("/notes")} >
+              See Note
             </Button>
           </>
         )}

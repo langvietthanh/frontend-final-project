@@ -21,15 +21,15 @@ function UserPhotos () {
   }, [userId]);
 
 
-  useEffect(() => {
-      fetchModel(`/user/${userId}`)
-          .then((user) => {
-              if (setContentTopBar) {
-                  setContentTopBar(`Photos of ${user.first_name} ${user.last_name}`);
-              }
-          })
-          .catch(console.log);
-  }, [userId, setContentTopBar]);
+  // useEffect(() => {
+  //     fetchModel(`/user/${userId}`)
+  //         .then((user) => {
+  //             if (setContentTopBar) {
+  //                 setContentTopBar(`Photos of ${user.first_name} ${user.last_name}`);
+  //             }
+  //         })
+  //         .catch(console.log);
+  // }, [userId, setContentTopBar]);
 
   useEffect(() => {
       if (advancedFeatures && userPhotos && userPhotos.length > 0 && !photoId) {

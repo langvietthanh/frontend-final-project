@@ -7,17 +7,15 @@
 async function fetchModel(url) {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(`http://localhost:8081/api${url}`, {
-      headers:{
-        "Authorization": "Bearer " + token,
-        "Content-Type": "application/json"
+    const res = await fetch(`http://localhost:8081/api${url}`,{
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
       }
-    }
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
+    })
+    if(!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return await res.json();
+
   } catch (error) {
     console.error("fetchModel error:", error);
     throw error;

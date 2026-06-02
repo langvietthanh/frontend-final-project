@@ -14,6 +14,7 @@ import {
   LoginRegister,
   Register,
   Login,
+  UserNotes
 } from "./components";
 
 import { AppContext } from './context';
@@ -22,27 +23,27 @@ const App = (props) => {
   const [contentTopBar, setContentTopBar] = useState("");
   const [advancedFeatures, setAdvancedFeatures] = useState(false);
   const [userPhotos, setUserPhotos] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [user, setUser] = useState(localStorage.getItem("user") || null);
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: '' });
   const [listUser, setListUser] = useState([]);
-
+  
   const contextValue = {
     contentTopBar,
     setContentTopBar,
     advancedFeatures,
     setAdvancedFeatures,
+    userPhotos,
+    setUserPhotos,
     token,
     setToken,
     user,
     setUser,
-    userPhotos,
-    setUserPhotos,
+    snackbar,
+    setSnackbar,
     listUser,
     setListUser,
-    snackbar,
-    setSnackbar
-  }
+  };
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
@@ -51,75 +52,59 @@ const App = (props) => {
     setSnackbar({ ...snackbar, open: false });
   }
 
+  // Phân tách Layout khi chưa đăng nhập (Public Routes)
+  const unauthRoutes = (
+    <Grid item xs={12}>
+      <Routes>
+        <Route path="/" element={<Outlet />}>
+          <Route index element={<LoginRegister />} />
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
+        </Route>
+      </Routes>
+    </Grid>
+  );
+
+  // Phân tách Layout khi đã đăng nhập (Protected Routes & Sidebar chứa UserList)
+  const authLayout = (
+    <>
+      <Grid item sm={3}>
+        <Paper >
+          <UserList />
+        </Paper>
+      </Grid>
+      <Grid item sm={9}>
+        <Paper>
+          <Routes>
+            <Route element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
+              <Route path="/users/:userId" element={<UserDetail />} />
+              <Route path="/photos/:userId" element={<UserPhotos />} />
+              <Route path="/photos/:userId/:photoId" element={<UserPhotos />} />
+              <Route path="/users" element={<UserList />} />
+              <Route path="/comments/:userId" element={<UserComment />} />
+              <Route path="/notes" element={<UserNotes />} />
+            </Route>
+          </Routes>
+        </Paper>
+      </Grid>
+    </>
+  );
+
   return (
     <AppContext.Provider value={contextValue}>
       <Router>
-        <div>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TopBar />
-            </Grid>
-            <div className="main-topbar-buffer" />
-            <Box display={token ? "none" : ""}>
-
-            </Box>
-            <Grid item xs={12}>
-              <Routes>
-                <Route path="/" element={<Outlet />} >
-                  <Route index element={<LoginRegister />} />
-                  <Route path="register" element={<Register />} />
-                  <Route path="login" element={<Login />} />
-                </Route>
-              </Routes>
-            </Grid>
-            {token &&
-              <>
-                <Grid item sm={3}>
-                  <Paper className="main-grid-item">
-                    <UserList />
-                  </Paper>
-                </Grid>
-                <Grid item sm={9}>
-                  <Paper>
-                    <Routes>
-                      <Route
-                        path="/users/:userId"
-                        element={
-                          <ProtectedRoute>
-                            <UserDetail />
-                          </ProtectedRoute>}
-                      />
-                      <Route
-                        path="/photos/:userId"
-                        element={
-                          <ProtectedRoute>
-                            <UserPhotos />
-                          </ProtectedRoute>}
-                      />
-                      <Route
-                        path="/photos/:userId/:photoId"
-                        element={
-                          <ProtectedRoute>
-                            <UserPhotos />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route path="/users" element={
-                        <ProtectedRoute>
-                          <UserList />
-                        </ProtectedRoute>} />
-                      <Route path="/comments/:userId" element={
-                        <ProtectedRoute>
-                          <UserComment />
-                        </ProtectedRoute>} />
-                    </Routes>
-                  </Paper>
-                </Grid>
-              </>
-            }
+        <Grid container spacing={2}>
+          {/* Header (Luôn hiển thị) */}
+          <Grid item xs={12}>
+            <TopBar />
           </Grid>
-        </div>
-      </Router>
+          <div className="main-topbar-buffer" />
+          
+          {/* Các Layout thay đổi dựa trên Auth State */}
+          {unauthRoutes}
+          {token && authLayout}
+        </Grid>
+      </Router> 
       <Snackbar
         open={snackbar.open}
         autoHideDuration={5000}

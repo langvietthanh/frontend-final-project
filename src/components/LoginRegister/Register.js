@@ -38,7 +38,8 @@ function Register(){
                     setPassRegister(true);
                     reset();
                 } else {
-                    const errorText = await res.text();
+                    const data = await res.json();
+                    const errorText = data.message;
                     setSnackbar({ open: true, message: "Register fail " + errorText, severity: 'error' });
                 }
             }
